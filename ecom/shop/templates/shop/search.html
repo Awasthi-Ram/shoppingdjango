@@ -1,0 +1,30 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}Search{% endblock %}
+
+{% block csspath %}
+<link rel="stylesheet" type="text/css" href="{% static 'shop/about.css' %}" />
+{% endblock %}
+
+{% block body %} 
+<div class="about-card">
+    <h2>About Us</h2>
+    <p>
+      Welcome to My Awesome Cart, your one-stop destination for all things shopping!
+      We are committed to providing you with the best online shopping experience.
+      Our wide range of products and top-notch customer service make us your
+      go-to place for all your shopping needs.
+    </p>
+    <p>
+      Whether you're looking for trendy fashion items, electronics, home decor, or
+      anything in between, we've got you covered. Shop with confidence knowing that
+      your satisfaction is our priority.
+    </p>
+    <p>
+      Feel free to explore our website, browse through our catalog, and find amazing
+      deals on high-quality products. Thank you for choosing My Awesome Cart for your
+      shopping adventures!
+    </p>
+</div>
+{% endblock %}

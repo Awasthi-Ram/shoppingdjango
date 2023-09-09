@@ -1,0 +1,22 @@
+.about-card {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    padding-top: 30px;
+  }
+
+  .about-card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .about-card p {
+    margin-bottom: 15px;
+    color: #333;
+  }

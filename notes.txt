@@ -11,7 +11,7 @@ python -m django --version - to know the version of the the python
 
 django----
 
-
+ 
 
 
 django-admin - to see all admin command
@@ -42,8 +42,10 @@ backend -code on server for dynamic change in the server
 
 
 create views.py 
+in urls.py
 from django.urls import path
-import views in url.py from . import views;
+---------import views in url.py 
+from . import views;
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -279,3 +281,988 @@ if char!= '\n' and char!= '\r':
     if(spaceremover == 'off' and newlineremove == "off" and fullcaps == "off" and CHECKBOX =="off"):
         return HttpResponse("nother happen")
     return render(request, 'analyze.html',param)
+
+
+
+
+
+
+
+    #################################text ulit finish ###############################
+
+
+
+    ######################################################################################
+    #######################################################################################
+    #########################E-COMERSE SITE###########################################
+    ####################################################################################
+    ##########################################################################
+
+
+    pyhton manage.py start app  shop - app which was just a plug in to our website
+    pyhton manage.py start app blog - app which was just a plug in to our website
+
+
+    #############frist shop (app :- publable web application)
+
+    views.urls
+    from django.http import HttpResponse
+from django.shortcuts import render
+
+# Create your views here.
+
+def index(request):
+    return HttpResponse(" index shop")
+
+create urls.py
+
+from django.contrib import admin
+from django.urls import path
+from . import views
+urlpatterns = [
+    path("" , views.index, name="shophome"),
+]
+
+include in urls.py of ecom
+ path("shop/",include("shop.urls")),
+
+
+ add apps in  to use templates on it 
+
+ INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'blog',
+    'shop'
+]
+
+def index(request):
+    return render(request,"blog/index.html")
+
+
+to load static file 
+
+ {% load static %}
+    <a href="{%static 'blog/my.txt' %}">clik here</a>
+    
+   <a href="{%static 'blog/img.png'%}" alt="alternative_text" target="_blank">click here for image
+    </a>
+
+cdn - content delivery network
+
+no need to link to static 
+
+it will cache in the browser so we d.not have to run it again and again
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    
+
+
+html
+
+
+{%load static %}
+    <a href="{% static 'shop/text.txt' %}">click for text</a>
+    <a href="{% static 'shop/img.png' %}">image</a>
+    <a><img src="{% static 'shop/img.png' %}"></a>
+
+
+
+url.py
+from django.contrib import admin
+from django.urls import path
+from . import views
+urlpatterns = [
+    path("" , views.index, name="ShopHome"),
+    path("about/",views.about,name="AboutUs"),
+    path("contact/",views.contact,name="ContactUs"),
+    path("tracker/",views.tracker,name="TrackingStatus"),
+    path("search/",views.search,name="Search"),
+    path("productview/",views.productview,name="productview"),
+    path("checkout/",views.checkout,name="Checkout"),
+]
+views.pyfrom django.http import HttpResponse
+from django.shortcuts import render
+
+# Create your views here.
+
+def index(request):
+    return render(request,"shop/index.html")
+    #return HttpResponse(" index shop")
+
+def about(request):
+    return HttpResponse("i am about")
+
+def contact(request):
+    return HttpResponse("i am contact")
+
+def tracker(request):
+    return HttpResponse("i am tracker")
+def search(request):
+    return HttpResponse("i am search")
+def productview(request):
+    return HttpResponse("i am productview")
+
+def checkout(request):
+    return HttpResponse("i am checkput")
+
+
+
+####################models in django####
+
+it is the single ,definitive source of information about your data . it contain the essential field and behavior of the data your are storing
+genrally each model maps to a single  database table
+and is represented by a class that subclasses models.Model
+
+
+in setting.py DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+it use by default sqlite3
+is a  c-language library that implement a small ,fast ,self-contained , high-relible ,fill feature sql databae engine
+
+SQLite is used to develop embedded software for devices like televisions, cell phones, cameras, etc. It can manage low to medium-traffic HTTP requests
+
+as the databse engine and create db file in project folder named "db" with extension ".sqlite
+
+python manage.py migrate  :-command is used to apply database migrations to synchronize your project's database schema with the current state of your models.
+
+baselly create all the table requred by the app nad store it into the data base
+
+
+
+from django.db import models
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'blog',
+    #'shop'
+    'shop.apps.ShopConfig'
+]
+
+in apps.py
+from django.apps import AppConfig
+
+
+class ShopConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'shop'
+
+
+# Create your models here.
+
+from django.db import models
+
+
+class Product(models.Model):
+    product_id = models.AutoField,#interfield hai jo ki auto metically increment hoti hai (primary firld is automaticalli is in the model by default no need to add)
+    name = models.CharField('Name', max_length=20)
+
+
+
+
+python manage.py makemigrations -: not storing in  database only save in migration 0001_inital.py
+
+
+python manage.py migrate :- to save it to the data base
+
+to see the model we have to go to admin page 
+root -super user
+
+frist we need to create super user python 
+
+manage.py create superuser
+
+super user : ram
+password 1234
+email ramawasthi300@gmail.com
+
+
+but we are not able to see our model 
+
+
+so we have to register our model in 
+admin.py
+
+from django.contrib import admin
+
+# Register your models here.
+from .models import Product
+
+admin.site.register(Product)
+
+than you are able to see the models in admin account where you can manulaaly add the prodect iteam
+
+
+
+############################ 
+
+from django.db import models
+
+# Create your models here.
+
+class Product(models.Model):
+    product_id = models.AutoField  #interfield hai jo ki auto metically increment hoti hai (primary firld is automaticalli is in the model by default no need to add)
+    product_name = models.CharField('Name', max_length=50)
+    category = models.CharField(max_length=50,default="")
+    subcategory = models.CharField(max_length=50,default="")
+    price = models.DecimalField("Price", decimal_places=2, max_digits=5000000)
+    desc = models.CharField(max_length=300)
+    pub_date = models.DateField()
+    image = models.ImageField(upload_to="shop/images",default="")
+    
+    def __str__(self):
+       return self.product_name
+
+
+
+
+
+#########################################MANAGEING MEDIA OR ImageField
+
+it create a media floder and store the media file to that folder 
+
+
+IN SETTING.PY 
+IMPORT os
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL ='/media/'
+
+in urls.py 
+from django.contrib import admin
+from django.urls import path ,include
+from django.conf import settings 
+from django.conf.urls.static import static
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path("shop/",include("shop.urls")),
+    path("blog/",include("blog.urls"))
+    
+
+]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
+
+#####3time to test model
+
+C:\Users\ramaw\OneDrive\Desktop\Django\ecom> python manage.py shell
+
+use to test and run query to our model 
+
+>>> from shop.models import Product 
+>>> Product.objects.all()
+<QuerySet [<Product: watch>, <Product: Skybag>, <Product: fortnight>, <Product: shrit>]>
+>>> myprod = Product(product_name="mouse",category="computer",subcategory="assessory",price=500,
+desc="mouse to move curcoe",pub_date=timezone.now())
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'timezone' is not defined
+>>> from django.utils import timezone
+>>> myprod = Product(product_name="mouse",category="computer",subcategory="assessory",price=500,desc="mouse to move curcoe",pub_date=timezone.now())
+>>> myprod.save()
+>>> myprod.product_id
+<class 'django.db.models.fields.AutoField'>
+>>> myprod.product_name
+'mouse'
+>>> Product.objects.all()
+<QuerySet [<Product: watch>, <Product: Skybag>, <Product: fortnight>, <Product: shrit>, <Product: mouse>]>
+>>> Product.objects.get(product_name="mouse")
+<Product: mouse>
+>>> a = Product.objects.get(product_name="mouse")
+>>> a.category
+'computer'
+
+##############################################################################
+stop redendent code
+#########################################################################
+template inheritance
+frist make a base .html 
+{%load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <title>{%block title%}{% endblock %}</title>
+    {%block csspath %} {% endblock %}
+    
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  
+  </head>
+  <body>
+    
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">My Awesome Cart</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+    {% block body %} {% endblock %}
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  
+    
+  </body>
+</html>
+ than use it in other 
+
+  {% extends 'shop/base.html' %}
+    {% load static %}
+    
+    {% block title %}About{% endblock %}
+    
+    {% block csspath %}
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/about.css' %}" />
+    {% endblock %}
+    
+    {% block body %} 
+    <div class="about-card">
+        <h2>About Us</h2>
+        <p>
+          Welcome to My Awesome Cart, your one-stop destination for all things shopping!
+          We are committed to providing you with the best online shopping experience.
+          Our wide range of products and top-notch customer service make us your
+          go-to place for all your shopping needs.
+        </p>
+        <p>
+          Whether you're looking for trendy fashion items, electronics, home decor, or
+          anything in between, we've got you covered. Shop with confidence knowing that
+          your satisfaction is our priority.
+        </p>
+        <p>
+          Feel free to explore our website, browse through our catalog, and find amazing
+          deals on high-quality products. Thank you for choosing My Awesome Cart for your
+          shopping adventures!
+        </p>
+    </div>
+    {% endblock %}
+    
+
+logic building to show the product on website
+
+we have 4 iteam on a slide 
+
+if we have n iteams we will have n //4 +1 slides id n is not divisible by  4
+but if n is divisible by 4,we have  n//4 slides
+
+so the formula for no of slide is  n //4 + ceil(n/4 - n // 4)
+
+python logic 
+
+we will display the frist iteam by default and give it the active target
+the next iteam will be fetched using a for loop 
+we will fetch all the  details from the  database and will show them in the homepage.
+later we will do the same thing category-website
+
+
+
+def index(request):
+    product = Product.objects.all()
+    print(product)
+    n = len(product)
+    nslides = n //4 + ceil((n/4) -(n//4))
+    params =  {'no_of_slide':nslides,'range':range(1,nslides),'product':product}
+    return render(request,"shop/index.html",params)
+
+
+
+<div class="container" >
+  <h2> top offer</h2>
+  <div id="demo" class="carousel slide my-3" data-ride="carousel">'
+      <ul class="carousel-indicators">
+          <li data-target="#demo" data-slide-to="0" class="active"></li>
+  {% for i in range %}
+     <li data-target="#demo" data-slide-to="{{i}}" ></li>
+  {% endfor %}
+</ul>
+
+<!--        slideshow starts here-->
+
+    <div class=" container carousel-inner no-padding">
+      <div class="carousel-item active">
+          
+          <div class="col-xs-3 col-sm-3 col-md-3">
+            <div class="card" style="width: 18rem;">
+              <img src='/media/{{product.0.image}}' class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{product.0.product_name}}</h5>
+                <p class="card-text">{{product.0.desc}}</p>
+                <a href="#" class="btn btn-primary">ADD to card</a>
+              </div>
+            </div>
+          </div>
+
+          {% for i in product|slice:"1:" %}
+          <div class="col-xs-3 col-sm-3 col-md-3">
+            <div class="card" style="width: 18rem;">
+              <img src='/media/{{i.image}}' class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{i.product_name}}</h5>
+                <p class="card-text">{{i.desc}}</p>
+                <a href="#" class="btn btn-primary">add to cart</a>
+              </div>
+            </div>
+          </div>
+
+          {% if forloop.counter|divisibleby:3 and forloop.counter > 0 and not forloop.last %}
+           </div><div class="carousel-item">
+          {% endif%}
+
+          {% endfor %}
+    </div>
+
+
+    </div>
+      </div>
+
+<a class="carousel-control-prev " href="#demo" role="button" data-slide="prev">
+ <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
+  <span class="sr-only">Previous</span>
+</a>
+<a class="carousel-control-next" href="#demo" role="button" data-slide="next">
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="sr-only">Next</span>
+</a>
+{% endblock %}
+</div>
+
+
+
+
+######################################################################################################
+step to create the virtual enviroment for any project
+1) why virtual enviroment - kyo ki hamare project ki library update ho sakti hai in future jo
+ ki backward compatable na ho
+ham apna project kisiko share karte hai or vo library ko install karta hai to by default updated
+ version install hoga but hamare project me agar koi funcanality hai jo ki future update ke sath 
+ compatable na ho to that create a hug problem to sove this we have virtual memory 
+
+ Steps to make virtual enviroment 
+
+ 1) frist create a direfctory or floder which meant to be virtual
+
+ mkdir myenviroment
+
+ go to that directory 
+
+ cd .\myenviroment\
+
+ 2) install virtualenv in system
+ pip install virtualenv
+ 3) create virtua enviroment 
+ virtualenv enviroment_name
+ 4)ls enviroment_name
+
+ Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        13-08-2023     23:04                Lib
+d-----        13-08-2023     23:04                Scripts
+-a----        13-08-2023     23:04             42 .gitignore        
+-a----        13-08-2023     23:04            410 pyvenv.cfg
+
+for windows
+5).\enviroment_name\Scripts\activate
+
+windows may need script activation in powershell to do thi sakti
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+
+for linux 
+source env/bin/activate
+
+   all set up 
+
+6) pip freeze :- it show nothing but outside in global enviroment we have many library
+
+7) install library
+pip install django==3.2
+
+
+which live inside this enviroment only not in global enviroment
+8) now to pip freeze :- to see the library
+
+9) create the requiredment.txt  store all the requiredment our python project have
+
+10)create requirement.txt
+pip freeze > requiredment.txt
+
+update every time when you install new library or use it
+
+11)runtime.txt
+contain the exite verstion of the python
+
+just create the file runtime.txt and type python version
+python-3.7.0 
+
+
+def index(request):
+    product = Product.objects.all()
+    print(product)
+    n = len(product)
+    nslides = n //4 + ceil((n/4) -(n//4))
+    # params =  {'no_of_slide':nslides,'range':range(1,nslides),'product':product}
+    allProds = [[product,range(1,nslides), nslides],[product,range(1,nslides),nslides]]
+    params = {'allProds':allProds}
+    return render(request,"shop/index.html",params)
+    #return HttpResponse(" index shop")
+
+
+    {% for product, range ,nSlides in allProds %}
+<div class="container" >
+  <h2>{{product.0.category}}</h2>
+  <div id="demo{{forloop.counter}}" class="carousel slide my-3" data-ride="carousel">'
+      <ul class="carousel-indicators">
+          <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
+  {% for i in range %}
+     <li data-target="#demo{{forloop.parentloop.counter}}" data-slide-to="{{i}}" ></li>
+  {% endfor %}
+</ul>
+
+
+
+    <div class=" container carousel-inner no-padding">
+      <div class="carousel-item active">
+          
+          <div class="col-xs-3 col-sm-3 col-md-3">
+            <div class="card" style="width: 18rem;">
+              <img src='/media/{{product.0.image}}' class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{product.0.product_name}}</h5>
+                <p class="card-text">{{product.0.desc}}</p>
+                <a href="#" class="btn btn-primary">ADD to card</a>
+              </div>
+            </div>
+          </div>
+
+          {% for i in product|slice:"1:" %}
+          <div class="col-xs-3 col-sm-3 col-md-3">
+            <div class="card" style="width: 18rem;">
+              <img src='/media/{{i.image}}' class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{i.product_name}}</h5>
+                <p class="card-text">{{i.desc}}</p>
+                <a href="#" class="btn btn-primary">add to cart</a>
+              </div>
+            </div>
+          </div>
+
+          {% if forloop.counter|divisibleby:3 and forloop.counter > 0 and not forloop.last %}
+           </div><div class="carousel-item">
+          {% endif%}
+
+          {% endfor %}
+    </div>
+
+    </div>
+      </div>
+
+<a class="carousel-control-prev " href="#demo{{forloop.counter}}" role="button" data-slide="prev">
+ <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
+  <span class="sr-only">Previous</span>
+</a>
+<a class="carousel-control-next"  href="#demo{{forloop.counter}}" role="button" data-slide="next">
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="sr-only">Next</span>
+</a>
+{% endfor %}
+</div>
+{% endblock %}
+
+to use cart iteam using local storage
+
+create block 
+
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  
+    {% block js %}{% endblock %}
+
+for all cards
+{% for product, range ,nSlides in allProds %}
+<div class="container" >
+  <h2 class="my-4">{{product.0.category}}</h2>
+  <div id="demo{{forloop.counter}}" class="carousel slide my-3" data-ride="carousel">'
+      <ul class="carousel-indicators">
+          <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
+  {% for i in range %}
+     <li data-target="#demo{{forloop.parentloop.counter}}" data-slide-to="{{i}}" ></li>
+  {% endfor %}
+</ul>
+
+
+
+    <div class=" container carousel-inner no-padding">
+      <div class="carousel-item active">
+          
+          <div class="col-xs-3 col-sm-3 col-md-3">
+            <div class="card" style="width: 18rem;">
+              <img src='/media/{{product.0.image}}' class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{product.0.product_name}}</h5>
+                <p class="card-text">{{product.0.desc}}</p>
+                
+                <button id="pr{{product.0.id}}" class="btn btn-primary cart">add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          {% for i in product|slice:"1:" %}
+          <div class="col-xs-3 col-sm-3 col-md-3">
+            <div class="card" style="width: 18rem;">
+              <img src='/media/{{i.image}}' class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{i.product_name}}</h5>
+                <p class="card-text">{{i.desc}}</p>
+                <button id="pr{{i.id}}"  class="btn btn-primary cart">add to cart</button>
+              </div>
+            </div>
+          </div>
+
+          {% if forloop.counter|divisibleby:3 and forloop.counter > 0 and not forloop.last %}
+           </div><div class="carousel-item">
+          {% endif%}
+
+          {% endfor %}
+    </div>
+
+    </div>
+      </div>
+
+<a class="carousel-control-prev " href="#demo{{forloop.counter}}" role="button" data-slide="prev">
+ <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
+  <span class="sr-only">Previous</span>
+</a>
+<a class="carousel-control-next"  href="#demo{{forloop.counter}}" role="button" data-slide="next">
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="sr-only">Next</span>
+</a>
+
+
+def index(request):
+    
+    
+    
+    
+    allProds = []
+    catprods = Product.objects.values('category','id')
+    cats = {iteam['category'] for iteam in catprods}
+    for cat in cats:
+        prod = Product.objects.filter(category=cat)
+        n = len(prod)
+        nslides = n //4 + ceil((n/4) -(n//4))
+        allProds.append([prod ,range(1,nslides),nslides])    
+    params = {'allProds':allProds}
+    return render(request,"shop/index.html",params)
+
+
+
+
+fill it in indedx.html
+
+
+ ------------------add to card----------------------------------
+
+ using sessionstrorage 
+ Session Storage and Local Storage are two web storage options provided by modern web browsers 
+ to store data on the client side. They are both part of the Web Storage API and allow you to store 
+ key-value pairs in the browser, but they have different purposes and lifetimes:
+
+Local Storage:
+
+Purpose: Local Storage is designed for long-term storage of data 
+on the client's device. Data stored in local storage remains available 
+even after the user closes the browser and reopens it.
+Scope: Data stored in local storage is scoped to the domain of the website.
+ It can be accessed by any JavaScript code on pages from the same domain.
+Capacity: Local storage typically has a larger storage capacity compared to session storage 
+(usually around 5-10 MB).
+Lifetime: Data in local storage persists until it is explicitly cleared by the user or by JavaScript code.
+javascript
+Copy code
+// Storing data in local storage
+localStorage.setItem('key', 'value');
+
+// Retrieving data from local storage
+const data = localStorage.getItem('key');
+
+// Removing data from local storage
+localStorage.removeItem('key');
+Session Storage:
+
+Purpose: Session Storage is designed for short-term storage of data. Data stored in session storage is only
+ available for the duration of a page session. When the user closes the browser or the tab, the data is deleted.
+Scope: Data stored in session storage is scoped to the domain of the website and is accessible to JavaScript code 
+on pages from the same domain.
+Capacity: Session storage typically has a smaller storage capacity compared to local storage (usually around 5-10 MB).
+Lifetime: Data in session storage persists as long as the page session is active. It is automatically cleared 
+when the session ends.
+javascript
+Copy code
+// Storing data in session storage
+sessionStorage.setItem('key', 'value');
+
+// Retrieving data from session storage
+const data = sessionStorage.getItem('key');
+
+// Removing data from session storage
+sessionStorage.removeItem('key');
+Use Cases:
+
+Local Storage: Use local storage when you need to store data that should persist across browser sessions and can be shared across multiple pages of the same domain, such as user preferences or cached data.
+Session Storage: Use session storage when you need to store data temporarily for a specific page session, such as form data or data that should be available during a single user interaction.
+It's important to note that both session storage and local storage are client-side storage solutions and are accessible to JavaScript running in the browser. Therefore, they should not be used to store sensitive or confidential information.
+{%block js %} 
+<script>
+
+ 
+
+  if(localStorage.getItem('cart') == null){
+    var cart = {};
+  }else{
+    cart = JSON.parse(localStorage.getItem('cart'));
+  }
+
+  $('.cart').click(function(){
+    
+    var idstr = this.id.toString();
+    
+    if (cart[idstr] !=undefined){
+      cart[idstr] = cart[idstr] +1;
+    }else{
+      cart[idstr]=   1;
+    }
+    console.log(cart);
+    localStorage.setItem('cart',JSON.stringify(cart));
+  })
+</script>
+{% endblock%}
+
+
+--------------error fix for more than 9 iteam --------
+
+ <div class=" container carousel-inner no-padding" style="padding: 20px;" >
+      <div class="carousel-item active">
+          {% for i in product %}
+          <div class="col-xs-3 col-sm-3 col-md-3">
+            <div class="card" style="width: 18rem;">
+              <img src='/media/{{i.image}}' class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{i.product_name}}</h5>
+                <p class="card-text">{{i.desc}}</p>
+                <button id="pr{{i.id}}"  class="btn btn-primary cart">add to cart</button>
+              </div>
+            </div>
+          </div>
+        
+
+          {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}
+           </div><div class="carousel-item">
+          {% endif%}
+
+          ----------------------------
+ some bootstrap thing---------- and maping all the links
+
+-----------------------------dynamic url-----------------------
+in index.html
+  <a href="/shop/productview/{{i.id}}"> <button id="qv{{i.id}}"  class="btn btn-primary cart">  Quick view</button></a>
+in urls.py
+pass value of int from url to the views.py target function
+  path("productview/<int:id>",views.productview,name="productview"),
+
+in views.py
+def productview(request,id):
+    # featch the product using the id
+
+    return render(request,"shop/productview.html")
+    
+{'product':product} = {'name use to asses in html',variable name}
+
+def productview(request,id):
+    # featch the product using the id
+    product = Product.objects.get(id=id)
+    #category, desc, id, image, price, product_name, pub_date, subcategory
+    print(product)
+    print(product)
+    return render(request,"shop/productview.html",{'product':product})
+
+    in productview.html
+    {% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.product_name }}-ram{% endblock %}
+
+{% block csspath %}
+<link rel="stylesheet" type="text/css" href="{% static 'shop/about.css' %}" />
+{% endblock %}
+
+{% block body %} 
+<div class="container my-4">
+    <div class="row">
+    <div class="col-md-4">
+    <div class="row">
+       <img src="/media//{{product.image}}" width="233px" height="385px">
+    </div>
+     <div class="row">
+            <button class="btn btn-primary mx-2"> Buy Now</button>
+            <button class="btn btn-primary mx-2 "> Add To Cart</button>
+        </div>
+        </div>
+    <div class="col-md-8">
+        <h5>{{product.product_name}}</h5>
+        <p>{{product.desc}}</p>
+    </div>
+        </div>
+</div>
+{% endblock %}
+
+
+for makinf sort description in index.html
+
+ allProds = []
+    catprods = Product.objects.values('category','id')
+    cats = {iteam['category'] for iteam in catprods}
+
+    for cat in cats:
+        prod = Product.objects.filter(category=cat)
+        for item in prod:
+            if len(item.desc) > 50:
+                print(len(item.desc))
+                item.desc = item.desc[:50] + '...'
+        n = len(prod)
+        nslides = n //4 + ceil((n/4) -(n//4))
+        allProds.append([prod ,range(1,nslides),nslides])  
+      
+    params = {'allProds':allProds}
+  
+    return render(request,"shop/index.html",params)
+
+-------------creating contact ppage -----------
+def contact(request):
+    # not requeired but good pratice to avoid error
+    if request.method =="POST":
+        print("post")
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        msg = request.POST.get("message")
+        print(name)
+    return render(request,"shop/contact.html")
+
+in models .py
+
+class Contact(models.Model):
+    msg_id = models.AutoField(primary_key=True)  #interfield hai jo ki auto metically increment hoti hai (primary firld is automaticalli is in the model by default no need to add)
+    name = models.CharField('Name', max_length=50)
+    email = models.EmailField(max_length=50,default="")
+    desc = models.TextField(max_length=500)
+    
+    
+    def __str__(self):
+       return self.name
+
+python manage.py makemigrations 
+python manage.py migrate
+
+now register your model
+
+from django.contrib import admin
+
+# Register your models here.
+from .models import Product,Contact
+
+admin.site.register(Product)
+admin.site.register(Contact)
+
+-------all done-------------
+to use it 
+from .models import Product , Contact
+
+contact =Contact(name=name,email=email,desc=msg)
+contact.save()
+
+
+----------must see myscript.js-------
+
+******************
+------connect javascript to django --------------------
+models to store the all the order---
+
+class orders(models.Model):
+    order_id = models.AutoField(primary_key=True)  #interfield hai jo ki auto metically increment hoti hai (primary firld is automaticalli is in the model by default no need to add)
+    iteams_json = models.CharField( max_length=50000)
+    name = models.CharField( max_length=90)
+    email = models.EmailField(max_length=50)
+    address = models.TextField(max_length=500)
+    city = models.CharField( max_length=90)
+    state = models.CharField( max_length=90)
+    zip_code = models.CharField( max_length=90)
+    
+    
+    def __str__(self):
+       return self.name
+
+admin.site.register(orders)
+
+
+ python manage.py makemigrations -  ye migration banata hai
+
+ python manage.py migrate       - ye migration karta hai
+
+
+---------------- connecting javascript to django ----------
+
+
+
+
+
+   
+
+
+

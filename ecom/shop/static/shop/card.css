@@ -15,8 +15,11 @@
  body .carousel-indicators li{
  background-color: blue;
  }
+ .carousel-indicators li{
+  background-color:#7270fc;
+  }
  body .carousel-indicators{
- bottom: 0;
+ bottom: -25px;
  }
  body .carousel-control-prev-icon,
  body .carousel-control-next-icon{

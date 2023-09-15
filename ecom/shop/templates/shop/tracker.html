@@ -1,30 +1,113 @@
 {% extends 'shop/base.html' %}
 {% load static %}
 
-{% block title %}tracker{% endblock %}
+{% block title %}Checkout - my Awesome  Tracker{% endblock %}
 
 {% block csspath %}
 <link rel="stylesheet" type="text/css" href="{% static 'shop/about.css' %}" />
 {% endblock %}
 
 {% block body %} 
-<div class="about-card">
-    <h2>About Us</h2>
-    <p>
-      Welcome to My Awesome Cart, your one-stop destination for all things shopping!
-      We are committed to providing you with the best online shopping experience.
-      Our wide range of products and top-notch customer service make us your
-      go-to place for all your shopping needs.
-    </p>
-    <p>
-      Whether you're looking for trendy fashion items, electronics, home decor, or
-      anything in between, we've got you covered. Shop with confidence knowing that
-      your satisfaction is our priority.
-    </p>
-    <p>
-      Feel free to explore our website, browse through our catalog, and find amazing
-      deals on high-quality products. Thank you for choosing My Awesome Cart for your
-      shopping adventures!
-    </p>
+<div class="container">
+  <div class="col my-4">
+      <h2>- My Awesome Cart Tracker -  enter your order id and email to Track your order</h2>
+      <form method="post"  id ="trackerform">
+        {% csrf_token %}
+          <div class="form-row">
+              <div class="form-group col-md-6">
+                  <label for="name"> order id</label>
+                  <input type="number" class="form-control" id="order_id" name="order_id" placeholder="order id">
+              </div>
+              <div class="form-group col-md-6">
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+              </div>
+          </div>
+          <button type="submit" class="btn btn-primary"> track Order</button>
+      </form>
+      
+  </div>
+  <div class="col my-4">
+      <h2>Your order status</h2>
+      <div >
+        <ul class="list-group" id="items">
+          ENTER YOUR ORDER ID AND EMAIL AND CLICK TRACKER ORDER TO FIND DETAILS ABOUT YOUR ORDERS
+            
+        </ul>
+        <h2>Your order details</h2>
+      <div >
+        <ul class="list-group" id="citems">
+          
+            
+        </ul>
+    </div>
+      
+          
+  </div>
 </div>
+{% endblock %}
+
+{%block js %}
+<script>
+  // jqueary
+  $('#trackerform').submit(function(event){
+    $('#items').empty();
+    var formdata = {
+      'orderid' : $('input[name=order_id]').val(),
+      'email':$('input[name=email]').val(),
+      'csrfmiddlewaretoken' : $('input[name=csrfmiddlewaretoken]').val()
+    }
+    console.log(formdata.orderid)
+  
+  // ajax
+  
+  $.ajax({
+    type:'POST',
+    url :'/shop/tracker/',
+    headers: {
+        'X-CSRFToken': formdata.csrfmiddlewaretoken // Replace with actual CSRF token
+    },
+    data: formdata,
+    encode:true
+
+  }).done(function(data){
+    data = JSON.parse(data);
+    updates = data[0]
+    if(updates.length >0 & updates !={}){
+    for (i = 0; i<updates.length;i++){
+      let text = updates[i]['text'];
+      let time = updates[i]['time'];
+      mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                  ${text}
+                  <span class="badge badge-primary badge-pill">${time}</span>
+              </li>`
+              $('#items').append(mystr);
+    }
+  }
+  else{
+    mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                  Sorry , YOUR order id or email may be in correct
+                  
+              </li>`
+    $('#items').append(mystr);
+  }
+  // filling the order details
+  cart = JSON.parse(data[1]);
+  for(iteam in cart){
+  
+  let name = cart[iteam][1];
+  let qty = cart[iteam][0];
+  
+  mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                  ${name}
+                  <span class="badge badge-primary badge-pill">${qty}</span>
+              </li>`
+              $('#citems').append(mystr);
+}
+    console.log(cart);
+  });
+
+  event.preventDefault(); // prevent the default dehavior of the form
+});
+</script>
 {% endblock %}

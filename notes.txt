@@ -1256,13 +1256,206 @@ admin.site.register(orders)
  python manage.py migrate       - ye migration karta hai
 
 
----------------- connecting javascript to django ----------
+---------------- connecting django to javasccript ----------
+
+{% if thank %} 
+alert("thanks for ordering with us and your order id is {{id}}. use it to track your order using our order tracker");
+localStorage.clear();
+document.location = "/shop";
+{% endif %}
+</script>
+
+it may show some error in editor but it is perfectly fine
+
+define template directory
+
+to use in project by default it see the app templates
+'DIRS': ['ecom/templates'],
 
 
+tracker models in shop/models.py 
 
+class orderupdate(models.Model):
+    update_id = models.AutoField(primary_key=True)
+    order_id = models.IntegerField(default="")
+    update_desc =models.CharField(max_length=5000)
+    timestamp = models.DateField(auto_now_add=True) # to to give current time stamp
 
-
+    def __str__(self):
+        return self.update_desc[0:7] + "..."
    
 
+
+json in pyhton views.py
+
+
+In Python, you can work with JSON (JavaScript Object Notation) data using the json module. JSON is a lightweight data interchange format that is commonly used for data serialization and communication between a server and a web application, as well as for configuration files.
+
+Here are some common tasks you can perform with JSON in Python using the json module:
+
+Parsing JSON Data:
+
+To parse (deserialize) JSON data into Python objects (e.g., dictionaries or lists), you can use the json.loads() function:
+
+python
+Copy code
+import json
+
+json_data = '{"name": "John", "age": 30, "city": "New York"}'
+python_data = json.loads(json_data)
+
+print(python_data)
+This will output:
+
+arduino
+Copy code
+{'name': 'John', 'age': 30, 'city': 'New York'}
+Creating JSON Data:
+
+To create JSON data from Python objects, you can use the json.dumps() function:
+
+python
+Copy code
+import json
+
+python_data = {'name': 'John', 'age': 30, 'city': 'New York'}
+json_data = json.dumps(python_data)
+
+print(json_data)
+This will output:
+
+json
+Copy code
+{"name": "John", "age": 30, "city": "New York"}
+Reading JSON from a File:
+
+You can also read JSON data from a file and parse it using the json.load() function:
+
+python
+Copy code
+import json
+
+with open('data.json', 'r') as file:
+    data = json.load(file)
+
+print(data)
+Writing JSON to a File:
+
+To write JSON data to a file, you can use the json.dump() function:
+
+python
+Copy code
+import json
+
+data = {'name': 'John', 'age': 30, 'city': 'New York'}
+
+with open('data.json', 'w') as file:
+    json.dump(data, file)
+These are some of the basic operations you can perform with JSON in Python using the json module. JSON is a versatile format for storing and exchanging structured data, 
+
+import json
+
+def tracker(request):
+    if request.method == "POST":
+        orderid = request.POST.get('order_id',"")
+        email = request.POST.get('email','')
+        try:
+            order = orders.objects.filter(order_id = orderid ,email = email)
+            if(len(order) > 0):
+                update = orderupdate.objects.filter(order_id = orderid)
+                updates = []
+                for iteam in updates:
+                    updates.append({'text': iteam.update_desc,'time':iteam.timestamp})
+                    responce = json.dumps(updates) // dumps is a json function
+                    return HttpResponse(responce)
+            else:
+                pass
+        except:
+            return HttpResponse(" order_id is not valid")
+    return render(request,"shop/tracker.html")
+
+
+    *********************************
+    ****************** without loading form submit ******************
+    ajex*********************************************************************
+    ********************************************************************************
+    ********************************************************
+    calling views.py from django
+
+ in tracker.html
+    go to jqueary cdn 
+    uncompressed find url 
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+     integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+     add it to home page by repalcing the default of bootstrap jqueary 
+     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+     crossorigin="anonymous"></script>
+
+
+  $('#trackerform').submit(function(event){
+    $('#items').empty();
+    var formdata = {
+      'orderid' : $('input[name=order_id]').val(),
+      'email':$('input[name=email]').val(),
+      'csrfmiddlewaretoken' : $('input[name=csrfmiddlewaretoken]').val()
+    }
+    console.log(formdata.orderid)
+  
+  // ajax
+  
+  $.ajax({
+    type:'POST',
+    url :'/shop/tracker/',
+    headers: {
+        'X-CSRFToken': formdata.csrfmiddlewaretoken // Replace with actual CSRF token
+    },
+    data: formdata,
+    encode:true
+
+  }).done(function(data){
+    data = JSON.parse(data);
+    updates = data[0]
+    if(updates.length >0 & updates !={}){
+    for (i = 0; i<updates.length;i++){
+      let text = updates[i]['text'];
+      let time = updates[i]['time'];
+      mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                  ${text}
+                  <span class="badge badge-primary badge-pill">${time}</span>
+              </li>`
+              $('#items').append(mystr);
+    }
+  }
+  else{
+    mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                  Sorry , YOUR order id or email may be in correct
+                  
+              </li>`
+    $('#items').append(mystr);
+  }
+  // filling the order details
+  cart = JSON.parse(data[1]);
+  for(iteam in cart){
+  
+  let name = cart[iteam][1];
+  let qty = cart[iteam][0];
+  
+  mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                  ${name}
+                  <span class="badge badge-primary badge-pill">${qty}</span>
+              </li>`
+              $('#citems').append(mystr);
+}
+    console.log(cart);
+  });
+
+  event.preventDefault(); // prevent the default dehavior of the form
+});
+
+
+
+##############3redirect to unother age#############################################
+<script>window.location="/shop"</script>
 
 

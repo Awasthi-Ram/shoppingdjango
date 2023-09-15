@@ -15,7 +15,14 @@
           <ul class="list-group">
               
           </ul>
+          
       </div>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mt-3">
+            <li class="breadcrumb-item active" aria-current="page">Your Cart Total Is <b>Rs.<span id="totalprice"></b>  </span>Enter your details below & place your order. Thanks for using My Awesome Cart!</li>
+        </ol>
+    </nav>
+      
   </div>
   <div class="col my-4">
       <h2>Step 2 - Enter Address & Other Details:</h2>
@@ -73,6 +80,7 @@
   cart = JSON.parse(localStorage.getItem("cart"));  
 }
 var sum = 0;
+var totalprice = 0;
 if ($.isEmptyObject(cart)){
   mystr = `<p>your cart is empty ,please add some iteam before checking out</p>`
   $('#items').append(mystr);
@@ -82,7 +90,9 @@ for(iteam in cart){
   
   let name = cart[iteam][1];
   let qty = cart[iteam][0];
+  let itemprice = cart[iteam][2];
   sum = sum + qty;
+  totalprice = totalprice + qty*itemprice;
   console.log(sum)
   mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
                   ${name}
@@ -91,8 +101,23 @@ for(iteam in cart){
               $('#items').append(mystr);
 }
 }
+console.log(totalprice)
 document.getElementById('cartno').innerHTML = sum;
+document.getElementById('totalprice').innerHTML = totalprice;
 console.log(cart);
-</script>
 
+$('#iteamjson').val(JSON.stringify(cart));
+{% if thank %} 
+alert("thanks for ordering with us and your order id is {{id}}. use it to track your order using our order tracker");
+localStorage.clear();
+document.location = "/shop";
+{% endif %}
+</script>
+{% if thank %}
+<!-- <script>   
+alert("thanks for ordering with us and your order id is {{id}}. use it to track your order using our order tracker");
+localStorage.clear();
+document.location = "/shop";
+</script> -->
+{% endif %}
 {% endblock %}

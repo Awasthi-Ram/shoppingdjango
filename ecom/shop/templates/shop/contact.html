@@ -32,3 +32,13 @@
     </div>
 </div>
 {% endblock %}
+
+{% block js %}
+<script>
+{% if thank %} 
+alert("thanks for ordering with us and your order id is {{id}}. use it to track your order using our order tracker");
+
+document.location = "/shop/contact";
+{% endif %}
+</script>
+{% endblock %}

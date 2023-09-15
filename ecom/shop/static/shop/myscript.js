@@ -16,8 +16,14 @@ if (localStorage.getItem("cart") == null) {
   } else {
     qty = 1;
     name =document.getElementById('name'+idstr).innerHTML;
-    cart[idstr] = [qty,name];
+
+    price =document.getElementById('price'+idstr).innerHTML;
+    
+    
+    cart[idstr] = [qty,name,parseInt(price)];
   }
+  
+  
   updateCart(cart);
 });
 //add popover to cart

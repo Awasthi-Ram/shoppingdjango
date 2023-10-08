@@ -9,4 +9,6 @@ urlpatterns = [
     path("search/",views.search,name="Search"),
     path("productview/<int:id>",views.productview,name="productview"),
     path("checkout/",views.checkout,name="Checkout"),
+    path('payment/', views.payment, name='payment'),
+    path('success/',views.success,name="success")
 ]

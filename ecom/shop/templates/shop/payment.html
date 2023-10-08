@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Paytm merchant payment page</title>
+</head>
+<body>
+<h1>Redirecting you to the merchant....</h1>
+<h1>Please do not refresh your page....</h1>
+{{payment}}
+<!-- <form action="https://securegw-stage.paytm.in/theia/processTransaction" method="post" name="paytm"> -->
+    <form action="/shop/payment/">
+    {% for key, value in ord.items %}
+    <input type="hidden" name="{{key}}" value="{{value}}">
+    {% endfor %}
+    <h2> your total amount to be procedded is {{ context.ord.amount}}</h2>
+    <h2> your total amount to be procedded is {{ context.payment.id }}</h2>
+    <button type="submit" id="rzp-button1" class="btn btn-primary"> confirm and Pay</button>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    
+    var options = {
+    
+    "key": "rzp_test_AV8KfcQsdHfG66",
+     
+   
+    "amount": "{{ context.payment.amount }}",
+    "currency": "INR",
+    
+    // Your/store name.
+    "name": "Ram AWASTHI Razorpay",
+    "description": "Test Transaction", 
+    // Pass the `id` obtained in the response of Step 1
+    "image": "https://example.com/your_logo", 
+    "order_id": "{{ context.payment.id  }}",
+
+    "handler": function (response){
+      window.location.href = `/shop/success/?order_id=`+response.razorpay_order_id;
+      // alert(response.razorpay_payment_id);
+       alert(response.razorpay_order_id);
+      // alert(response.razorpay_signature)
+  },
+  "prefill": {
+      "name": "Ram",
+      "email": "ramawasthi30@gmail.com",
+      "contact": "7000781800"
+  },
+  "notes": {
+      "address": "Razorpay Corporate Office"
+  },
+  "theme": {
+      "color": "#3399cc"
+  }
+    
+  };
+   
+  // initialise razorpay with the options.
+  var rzp1 = new Razorpay(options);
+   rzp1.on('payment.failed',function(response){
+      alert(response.error.code);
+      alert(response.error.description);
+      lert(response.error.source);
+      alert(response.error.step);
+      alert(response.error.reason);
+      alert(response.error.metadata.order_id);
+      alert(response.error.metadata.payment_id);  
+   })
+  // add event listener to the payment button.
+  document.getElementById("rzp-button1").onclick = function (e) {
+    rzp1.open();
+    e.preventDefault();
+  };
+  </script>
+</form>
+</body>
+<!-- <script>
+
+    
+document.paytm.submit()
+</script> -->
+</html>

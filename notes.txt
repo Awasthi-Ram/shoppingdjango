@@ -1459,3 +1459,172 @@ def tracker(request):
 <script>window.location="/shop"</script>
 
 
+##################file and photo link  <a href="{%static 'blog/my.txt' %}">clik here</a>
+    
+    <a href="{%static 'blog/img.png'%}" alt="alternative_text" target="_blank">click here for image
+
+
+#######################django model queary 
+
+from myapp.models import MyModel
+
+# Query all records from the MyModel table
+results = MyModel.objects.all()
+
+# Filter records based on a condition
+filtered_results = MyModel.objects.filter(some_field='some_value')
+
+# Create a new record
+new_record = MyModel(some_field='new_value')
+new_record.save()
+
+# Update a record
+record_to_update = MyModel.objects.get(id=1)
+record_to_update.some_field = 'updated_value'
+record_to_update.save()
+
+# Delete a record
+record_to_delete = MyModel.objects.get(id=2)
+record_to_delete.delete()
+
+############################sql queary run using django.db connection 
+
+Certainly! Here are more examples of using the connection object in Django to execute custom SQL queries:
+
+Inserting Data:
+
+python
+Copy code
+from django.db import connection
+
+# Execute an INSERT query
+with connection.cursor() as cursor:
+    cursor.execute("INSERT INTO my_table (column1, column2) VALUES (%s, %s)", ['value1', 'value2'])
+This example inserts a new row into the my_table table.
+
+Updating Data:
+
+python
+Copy code
+from django.db import connection
+
+# Execute an UPDATE query
+with connection.cursor() as cursor:
+    cursor.execute("UPDATE my_table SET column1 = %s WHERE column2 = %s", ['new_value', 'some_condition'])
+This example updates data in the my_table table based on a condition.
+
+Deleting Data:
+
+python
+Copy code
+from django.db import connection
+
+# Execute a DELETE query
+with connection.cursor() as cursor:
+    cursor.execute("DELETE FROM my_table WHERE column1 = %s", ['value_to_delete'])
+This example deletes rows from the my_table table based on a condition.
+
+Executing Stored Procedures:
+
+python
+Copy code
+from django.db import connection
+
+# Execute a stored procedure
+with connection.cursor() as cursor:
+    cursor.callproc("my_stored_procedure", ['param1', 'param2'])
+This example calls a stored procedure named my_stored_procedure with parameters.
+
+Fetching Data:
+
+python
+Copy code
+from django.db import connection
+
+# Execute a SELECT query and fetch results
+with connection.cursor() as cursor:
+    cursor.execute("SELECT column1, column2 FROM my_table WHERE some_condition = %s", ['some_value'])
+    results = cursor.fetchall()
+
+
+
+
+    ####################
+    #############
+    #
+    ############################
+    identify the element using id and pass url with id  and pass it to the views .py method
+
+    path("blogpost/<int:id>",views.blogpost,name="blogPost")
+    def blogpost(request,id):
+    return render(request,"blog/blogpost.html")
+
+    def BlogPost(request,id):
+    post = blogpost.objects.filter(post_id = id)[0]
+    #[0] is because it retirn list and we want the data of the frist elemtnt by default there is only one element
+    print(post)
+    return render(request,"blog/blogpost.html",{'post':post})
+
+
+########################################################################################################
+    ############### how to add plug in to the website
+     how to add facebook like share and comment to the website using facebook account ###########
+
+     facebook comment plug in
+
+     steps 
+     1) go to this url https://developers.facebook.com/docs/plugins/comments/  or search facebook comment plug in
+
+     2)step then go the comment plug in genrator section 
+     
+     3) enter your website url for now it is http://127.0.0.1:8000/blog/blogpost  but in deployment time enter the the real use
+     lik ramawsthi.com
+
+     4) then click on get code button  it genrate javascript sdk and the code block use to put comment in our web site
+
+     5) copy and past he script in base.url or the page here you want to add comment section
+
+     6) now add the div code block to where i want my comment section
+
+     but this comment post is seen every where 
+
+     or we want to make the comment of all post independent
+
+     har post me uske aone comment ho
+
+     so just use dynamic url
+
+     problem encounter the same url of port 8000 used by many one so i have change it to 7000 
+
+     similarly we can use like button and share button 
+
+     no need to include javascript again and again but past div tar
+
+     <div class="fb-share-button" data-href="http://127.0.0.1:8000/blog/blogpost/{{post.post_id}}" data-layout="" data-size="">
+                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2F127.0.0.1%3A8000%2Fblog%2Fblogpost%2F2&amp;src=sdkpreparse" 
+                    class="fb-xfbml-parse-ignore">Share</a></div>
+
+
+################################## now add payment funcanality integrate paytm payment gate way ########
+
+
+in orders model  add amount fields 
+
+than make a hidden input field in checkout form and make payment using it 
+and make it equal to the total price and update in orders table 
+
+now go to paytm payment integration
+
+we have to by pass csrf token because it do'nt allow to resend request i that link
+so paytm not able to resend the confirm request
+
+user payment karega button pe click karega 
+we send post request to the paytm by submitting form 
+
+and paytm resend request with the status 
+
+and it also hande the check sum so that no user is able to cahnge the murchant id
+
+install this file 
+pip install pycryptodome
+

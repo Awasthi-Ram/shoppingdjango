@@ -4,27 +4,81 @@
 {% block title %}Search{% endblock %}
 
 {% block csspath %}
-<link rel="stylesheet" type="text/css" href="{% static 'shop/about.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'shop/card.css' %}" />
+
 {% endblock %}
 
 {% block body %} 
-<div class="about-card">
-    <h2>About Us</h2>
-    <p>
-      Welcome to My Awesome Cart, your one-stop destination for all things shopping!
-      We are committed to providing you with the best online shopping experience.
-      Our wide range of products and top-notch customer service make us your
-      go-to place for all your shopping needs.
-    </p>
-    <p>
-      Whether you're looking for trendy fashion items, electronics, home decor, or
-      anything in between, we've got you covered. Shop with confidence knowing that
-      your satisfaction is our priority.
-    </p>
-    <p>
-      Feel free to explore our website, browse through our catalog, and find amazing
-      deals on high-quality products. Thank you for choosing My Awesome Cart for your
-      shopping adventures!
-    </p>
+<br>
+   
+<div class="container" >
+<!--        slideshow starts here-->
+{% for product, range ,nSlides in allProds %}
+
+  <h2 class="my-4">{{product.0.category}}</h2>
+  <div class="row">
+  <div id="demo{{forloop.counter}}" class="col carousel slide my-3" data-ride="carousel">'
+      <ul class="carousel-indicators">
+          <li data-target="#demo{{forloop.counter}}" data-slide-to="0" class="active"></li>
+  {% for i in range %}
+     <li data-target="#demo{{forloop.parentloop.counter}}" data-slide-to="{{i}}" ></li>
+  {% endfor %}
+</ul>
+
+
+    
+    <div class=" container carousel-inner no-padding" style="padding: 20px;" >
+      <div class="carousel-item active">
+          {% for i in product %}
+          <div class="col-xs-3 col-sm-3 col-md-3">
+            <div class="card align-items-center" style="width: 18rem;">
+              <img src='/media/{{i.image}}' class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title" id="namepr{{i.id}}">{{i.product_name}}</h5>
+                <h6 class="card-title" >Price.<span id="pricepr{{i.id}}">{{i.price}}</span></h6>
+                <p class="card-text">{{i.desc}}</p>
+                <span id="divpr{{i.id}}" class="divpr">
+                <button id="pr{{i.id}}"  class="btn btn-primary cart">add to cart</button>
+              </span>
+               <a href="/shop/productview/{{i.id}}"> <button id="qv{{i.id}}"  class="btn btn-primary cart">  Quick view</button></a>
+              
+              </div>
+            </div>
+          </div>
+        
+
+          {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}
+           </div><div class="carousel-item">
+          {% endif%}
+        
+          {% endfor %}
+    </div>
+
+    </div>
+      </div>
+    
+<a class="carousel-control-prev " href="#demo{{forloop.counter}}" role="button" data-slide="prev" style="padding-top: 220px;">
+ <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
+  <span class="sr-only">Previous</span>
+</a>
+<a class="carousel-control-next"  href="#demo{{forloop.counter}}" role="button" data-slide="next" style="padding-top: 220px;">
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="sr-only">Next</span>
+</a>
+</div>
+{% endfor %}
 </div>
 {% endblock %}
+
+{% block js %}
+<script>
+  {% if msg|length != 0 %}
+  alert("{{msg}}")
+  
+  window.location.href="/"
+          
+  {% endif%}
+  </script>
+<script src="{% static 'shop/myscript.js' %}" defer></script>
+{% endblock %}
+

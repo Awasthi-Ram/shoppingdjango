@@ -71,9 +71,11 @@
     encode:true
 
   }).done(function(data){
+    $('#citems').empty();
     data = JSON.parse(data);
-    updates = data[0]
-    if(updates.length >0 & updates !={}){
+    
+    if( data['status'] == 'success'){
+      updates = data['updates']
     for (i = 0; i<updates.length;i++){
       let text = updates[i]['text'];
       let time = updates[i]['time'];
@@ -83,16 +85,7 @@
               </li>`
               $('#items').append(mystr);
     }
-  }
-  else{
-    mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
-                  Sorry , YOUR order id or email may be in correct
-                  
-              </li>`
-    $('#items').append(mystr);
-  }
-  // filling the order details
-  cart = JSON.parse(data[1]);
+    cart = JSON.parse(data["itemsJson"]);
   for(iteam in cart){
   
   let name = cart[iteam][1];
@@ -104,6 +97,17 @@
               </li>`
               $('#citems').append(mystr);
 }
+  }
+  else{
+    mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                  Sorry , YOUR order id or email may be in correct
+                  
+              </li>`
+    $('#items').append(mystr);
+    $('#citems').append(mystr);
+  }
+  // filling the order details
+
     console.log(cart);
   });
 

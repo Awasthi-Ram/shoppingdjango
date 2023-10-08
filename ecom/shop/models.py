@@ -29,6 +29,7 @@ class Contact(models.Model):
 class orders(models.Model):
     order_id = models.AutoField(primary_key=True)  #interfield hai jo ki auto metically increment hoti hai (primary firld is automaticalli is in the model by default no need to add)
     iteams_json = models.CharField( max_length=50000)
+    amount = models.IntegerField(default=0)
     name = models.CharField( max_length=90)
     email = models.EmailField(max_length=50)
     address = models.TextField(max_length=500)
@@ -36,7 +37,8 @@ class orders(models.Model):
     state = models.CharField( max_length=90)
     zip_code = models.CharField( max_length=90)
     phone = models.IntegerField(default="999999999")
-    
+    payment_id = models.CharField(max_length=90 ,default="")
+    is_paid = models.BooleanField(default=False)
     def __str__(self):
        return self.name
     
@@ -45,6 +47,6 @@ class orderupdate(models.Model):
     order_id = models.IntegerField(default="")
     update_desc =models.CharField(max_length=5000)
     timestamp = models.DateField(auto_now_add=True)
-
+    order_status = models.BooleanField(default=False)
     def __str__(self):
         return self.update_desc[0:7] + "..."
